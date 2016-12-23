@@ -1,13 +1,16 @@
-FLAGS=--std=c11 -Os
+FLAGS=--std=c11 -ggdb
 .PHONY: clean
 
 all: mkdict unana
 
-mkdict: mkdict.c
-	cc ${FLAGS} mkdict.c -o mkdict
+mkdict: mkdict.c key.o key.h
+	cc ${FLAGS} mkdict.c key.o -o mkdict
 
-unana: unana.c
-	cc ${FLAGS} unana.c -o unana
+unana: unana.c key.o key.h
+	cc ${FLAGS} unana.c key.o -o unana
+
+key.o: key.c key.h
+	cc ${FLAGS} key.c -c -o key.o
 
 clean:
-	rm mkdict unana
+	rm -f mkdict unana *.o

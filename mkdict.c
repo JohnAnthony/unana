@@ -14,6 +14,8 @@
 #include <stdbool.h>
 #include <unistd.h>
 
+#include "key.h"
+
 int
 main(int argc, char** argv) {
 	if (argc != 3) {
@@ -46,6 +48,8 @@ main(int argc, char** argv) {
 		char* s;
 		bool good = true;
 		size_t written;
+		size_t keylen;
+		char* key;
 
 		line[read-1] = '\0';
 		s = line;
@@ -63,8 +67,11 @@ main(int argc, char** argv) {
 		if (!good)
 			continue;
 
-		written = fwrite(line, 1, read, fout);
+		key = dict_key(line, read-1, &keylen);
+		written = fwrite(key, 1, keylen, fout);
+		free(key);
 
+		written = fwrite(line, 1, read, fout);
 		if (written != read) {
 			printf("Error writing to dictionary at word: '%s'\n", line);
 			goto CLEANUP;
