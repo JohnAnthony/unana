@@ -51,13 +51,13 @@ main(int argc, char** argv) {
 		size_t keylen;
 		char* key;
 
-		line[read-1] = '\0';
+		line[read - 1] = '\0';
 		s = line;
 		while (*s) {
 			*s = tolower(*s);
 
 			if (*s < 'a' || *s > 'z') {
-				printf("Rejecting word '%s' for special characters\n", line);
+				printf("Rejecting word '%s' for special character (%c)\n", line, *s);
 				good = false;
 				break;
 			}
@@ -68,14 +68,8 @@ main(int argc, char** argv) {
 			continue;
 
 		key = dict_key(line, read-1, &keylen);
-		written = fwrite(key, 1, keylen, fout);
+		fprintf(fout, "%s$%s\n", key, line);
 		free(key);
-
-		written = fwrite(line, 1, read, fout);
-		if (written != read) {
-			printf("Error writing to dictionary at word: '%s'\n", line);
-			goto CLEANUP;
-		}
 
 		count++;
 	}

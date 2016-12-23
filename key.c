@@ -17,7 +17,7 @@ dict_key(char* line, size_t len, size_t* keylen) {
 	char* s;
 	char* ret = malloc(KEY_SIZE + 1);
 	assert(ret);
-	char* sorted = malloc(len + 1);
+	char* sorted = malloc(len);
 	assert(ret);
 
 	memcpy(sorted, line, len);
@@ -26,7 +26,11 @@ dict_key(char* line, size_t len, size_t* keylen) {
 	for (i = 0; i < KEY_SIZE && sorted[i]; i++)
 		ret[i] = sorted[i];
 
-	ret[i] = '$';
-	*keylen = i+1;
+	*keylen = i;
 	return ret;
+}
+
+size_t
+table_key(char* dict_key) {
+	return 0;
 }
