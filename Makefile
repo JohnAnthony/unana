@@ -1,4 +1,4 @@
-FLAGS=--std=c11 -ggdb
+FLAGS=--std=gnu11 -Os
 .PHONY: clean
 
 all: mkdict unana
