@@ -33,7 +33,7 @@ main(int argc, char** argv) {
 
 	fin = fopen(argv[1], "r");
 	if (!fin) {
-		printf("Unable to open worlist: %s\n", argv[1]);
+		printf("Unable to open wordlist: %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
 
