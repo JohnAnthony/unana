@@ -8,6 +8,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "key.h"
 
@@ -43,6 +44,7 @@ main(int argc, char** argv) {
 	size_t i;
 	char c;
 
+	puts("Loading dictionary...");
 	while (1) {
 		i = 0;
 		while ((c = fgetc(f)) != '$') {
@@ -58,7 +60,15 @@ main(int argc, char** argv) {
 
 		tkey = table_key(key);
 
-		printf("%s __ %s (%u)\n", key, val, tkey);
+		Result *r = malloc(sizeof(Result)); // Owned
+		if (!r) {
+			puts("Error allocating space");
+			goto CLEANUP;
+		}
+	   
+		r->val = strdup(val); // Owned
+		r->next = table[tkey];
+		table[tkey] = r;
 
 		c = fgetc(f);
 		if (c == EOF)
@@ -66,6 +76,22 @@ main(int argc, char** argv) {
 		ungetc(c, f);
 	}
 
-	// TODO: Free all this memory!
+	// TODO: Make interactive, dictionary only loads once
+
+	char* target = strdup(argv[1]);
+	size_t keylen;
+	char* t_key = dict_key(target, strlen(target), &keylen); // Owned
+	size_t tt_key = table_key(t_key);
+
+	printf("Using target '%s' with key '%s' (%u)\n", target, t_key, tt_key);
+
+	Result *r = table[tt_key];
+	while (r) {
+		printf("Found result: %s\n", r->val);
+		r = r->next;
+	}
+
+CLEANUP:
+	// TODO: Free all Results and Result.vals
 	return EXIT_SUCCESS;
 }
