@@ -11,6 +11,7 @@
 #include <string.h>
 
 #include "key.h"
+#include "anagram.h"
 
 typedef struct Result Result;
 struct Result {
@@ -87,7 +88,8 @@ main(int argc, char** argv) {
 
 	Result *r = table[tt_key];
 	while (r) {
-		printf("Found result: %s\n", r->val);
+		if (is_anagram(target, r->val))
+			printf("Found result: %s\n", r->val);
 		r = r->next;
 	}
 
