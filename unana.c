@@ -95,6 +95,8 @@ main(int argc, char** argv) {
 
 CLEANUP:
 	puts("Freeing memory like a good boy...");
+	free(t_key);
+
 	for (i = 0; i < KEY_SPACE; i++) {
 		Result* r = table[i];
 		while (r) {
