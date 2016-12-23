@@ -8,7 +8,7 @@ const char* freq = "etaoinshrdlcumwfgypbvkjxqz";
 
 static int
 by_rev_freq(const void* a, const void* b) {
-	return strchr(freq, * (char*)b) - strchr(freq, * (char*)a);
+	return strchr(freq, *(char*)b) - strchr(freq, *(char*)a);
 }
 
 char* // Ownership passes out
@@ -32,5 +32,14 @@ dict_key(char* line, size_t len, size_t* keylen) {
 
 size_t
 table_key(char* dict_key) {
-	return 0;
+	size_t ret = 0;
+	char* s = dict_key;
+
+	while (*s != '\0') {
+		ret *= 26;
+		ret += (strchr(freq, *s) - freq) + 1;
+		s++;
+	}
+
+	return ret;
 }

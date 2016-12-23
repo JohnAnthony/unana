@@ -37,19 +37,33 @@ main(int argc, char** argv) {
 		exit(EXIT_FAILURE);
 	}
 
-	char key[KEY_SIZE];
+	char key[KEY_SIZE + 1];
 	char val[256];
+	size_t tkey;
 	size_t i;
 	char c;
 
-	i = 0;
-	while ((c = fgetc(f)) != '$') {
-		key[i++] = c;
-	}
+	while (1) {
+		i = 0;
+		while ((c = fgetc(f)) != '$') {
+			key[i++] = c;
+		}
+		key[i] = '\0';
 
-	i = 0;
-	for(c = fgetc(f); c != '\n' && c != EOF; c = fgetc(f)) {
-		val[i++] = c;
+		i = 0;
+		for(c = fgetc(f); c != '\n' && c != EOF; c = fgetc(f)) {
+			val[i++] = c;
+		}
+		val[i] = '\0';
+
+		tkey = table_key(key);
+
+		printf("%s __ %s (%u)\n", key, val, tkey);
+
+		c = fgetc(f);
+		if (c == EOF)
+			break;
+		ungetc(c, f);
 	}
 
 	// TODO: Free all this memory!
