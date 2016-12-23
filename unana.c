@@ -94,6 +94,15 @@ main(int argc, char** argv) {
 	}
 
 CLEANUP:
-	// TODO: Free all Results and Result.vals
+	puts("Freeing memory like a good boy...");
+	for (i = 0; i < KEY_SPACE; i++) {
+		Result* r = table[i];
+		while (r) {
+			Result *next = r->next;
+			free(r->val);
+			free(r);
+			r = next;
+		}
+	}
 	return EXIT_SUCCESS;
 }
