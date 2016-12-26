@@ -110,7 +110,7 @@ main(int argc, char** argv) {
 	}
 
 CLEANUP:
-	puts("Freeing memory like a good boy...");
+	puts("Freeing memory");
 	free(t_key);
 
 	for (i = 0; i < KEY_SPACE; i++) {
