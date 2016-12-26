@@ -93,7 +93,7 @@ main(int argc, char** argv) {
 		ungetc(c, f);
 	}
 
-
+	puts("Entering shell... (Type !exit or press ^D to exit)");
 	char buf[256];
 	while (1) {
 		printf(">> ");
